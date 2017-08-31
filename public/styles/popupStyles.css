@@ -1,0 +1,16 @@
+.viewInputs {
+    width: 100%;
+}
+
+.container {
+    padding-top: 10px;
+    padding-bottom: 8px;
+}
+
+.inputView {
+    margin-top: 3px;
+}
+
+.popupSubmit {
+    margin-top: 8px;
+}
