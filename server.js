@@ -102,7 +102,7 @@ app.post('/post/NewTask', function (req, res) {
 app.post('/post/editTask', function (req, res) {
     MongoClient.connect('mongodb://szi:0800@ds155191.mlab.com:55191/kanban_board', function (err, db) {
         var taskCollection = db.collection('tasks');
-        taskCollection.edit({
+        taskCollection.update({
             "user": req.body.user,
             "prio": req.body.prio,
             "estimate": req.body.estimate,
