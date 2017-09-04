@@ -75,6 +75,53 @@ app.post('/post/backlog', function (req, res) {
         });
     });
 });
+app.post('/post/NewTask', function (req, res) {
+    MongoClient.connect('mongodb://szi:0800@ds155191.mlab.com:55191/kanban_board', function (err, db) {
+        var taskCollection = db.collection('tasks');
+        taskCollection.insert({
+            "user": req.body.user,
+            "prio": req.body.prio,
+            "estimate": req.body.estimate,
+            "label": req.body.label,
+            "description": req.body.description,
+            "comments": req.body.comments,
+            "state": req.body.state,
+            "kanban_id": req.body.kanban_id
+        });
+        var taskCollection = db.collection('tasks');
+        taskCollection.find().toArray(function (err, tasks) {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json(tasks);
+            }
+        });
+    });
+});
+
+app.post('/post/editTask', function (req, res) {
+    MongoClient.connect('mongodb://szi:0800@ds155191.mlab.com:55191/kanban_board', function (err, db) {
+        var taskCollection = db.collection('tasks');
+        taskCollection.edit({
+            "user": req.body.user,
+            "prio": req.body.prio,
+            "estimate": req.body.estimate,
+            "label": req.body.label,
+            "description": req.body.description,
+            "comments": req.body.comments,
+            "state": req.body.state,
+            "kanban_id": req.body.kanban_id
+        });
+        var taskCollection = db.collection('tasks');
+        taskCollection.find().toArray(function (err, tasks) {
+            if (err) {
+                console.log(err);
+            } else {
+                res.json(tasks);
+            }
+        });
+    });
+});
 
 app.listen(3001, function (err) {
     if (err) {
