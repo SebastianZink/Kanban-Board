@@ -41,7 +41,7 @@
     </div>
 
     <div id="users" style="display: none" ng-controller="UserDataCtrl"> {{userList}} </div>
-    <div id="tasks" style="display: none" ng-controller="TaskDataCtrl"> {{tasksList}} </div>
+    
 
     <form id="taskssubmit" style="margin: 0 auto">
         <div class="modal fade" id='exampleModalLabel' role="dialog">
@@ -139,7 +139,7 @@
                                     User<br>
                                     <input class="viewInputs" list="user" name="user" id="users_" required>
                                     <datalist id="user">
-                                       
+
                                     </datalist>
                                 </div>
                                 <div class="col-md-2 inputView">
@@ -192,7 +192,10 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" name="button" id="addItem_" class="btn btn-primary">Save changes</button>
+                    <div ng-controller="TaskDataCtrl">
+                        <button type="submit" name="button" id="addItem_" class="btn btn-primary" ng-click="addTask();" onclick="new2()" data-dismiss="modal">Save changes</button>
+                        <div id="tasks" style="display: none"> {{tasksList}} </div>
+                    </div>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
