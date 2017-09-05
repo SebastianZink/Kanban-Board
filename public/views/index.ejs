@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+    <meta charset="utf-8">
+    <title>Kanbanboard</title>
+    <link rel="stylesheet" href="./jqwidgets/styles/jqx.base.css" type="text/css" />
+    <script type="text/javascript" src="./scripts/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="./jqwidgets/jqxcore.js"></script>
+    <script type="text/javascript" src="./jqwidgets/jqxsortable.js"></script>
+    <script type="text/javascript" src="./jqwidgets/jqxkanban.js"></script>
+    <script type="text/javascript" src="./jqwidgets/jqxdata.js"></script>
+    <script src="logic.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script>
+    <script src="./controllers/controller.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+</head>
+
+<script>
+    $(document).ready(function () {
+        createKanban();
+    });
+
+    function new2() {
+        createKanban();
+    }
+
+</script>
+
+<body>
+    <button type='button' id='secondbutton' class='btn btn-info btn-lg' data-toggle='modal' data-target="#exampleModalLabel">+</button>
+    <br />
+
+    <div id="container">
+        <div id="kanban">
+
+        </div>
+    </div>
+
+    <div id="users" style="display: none" ng-controller="UserDataCtrl"> {{userList}} </div>
+    
+    <form id="taskssubmit" style="margin: 0 auto">
+        <div class="modal fade" id='exampleModalLabel' role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Backlog/Bug</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container" style="border: none;width:550px;" style="background:rgb(255,255,255);margin:0px;padding:0px;border-image:none;width:100%;height:700px;">
+                            <div class="row">
+                                <div class="col-md-4 inputView">
+                                    User<br>
+                                    <input class="viewInputs" list="userList" ng-model="formData.user" name="user" required>
+                                    <datalist id="userList">
+
+                                    </datalist>
+                                </div>
+                                <div class="col-md-4 inputView">
+                                    Prio<br>
+                                    <input class="viewInputs" list="prio" ng-model="formData.prio" name="prio" required>
+                                    <datalist id="prio">
+
+                                    </datalist>
+                                </div>
+                                <div class="col-md-4 inputView">
+                                    Backlog/Bug<br>
+                                    <input class="viewInputs" list="backlog" ng-model="formData.backlog" name="backlog" required>
+                                    <datalist id="backlog">
+                                        <option value="Backlog">
+                                            <option value="Bug">
+                                    </datalist>
+                                </div>
+                            </div>
+                            <div class="inputView">
+                                Titel:<br>
+                                <input class="viewInputs" ng-model="formData.titel" type="text" name="titel" required><br>
+                            </div>
+                            <div class="inputView">
+                                Tags:<br>
+                                <input class="viewInputs" ng-model="formData.tags" type="text" name="tags" required><br>
+                            </div>
+                            <div class="inputView">
+                                Area:<br>
+                                <input class="viewInputs" ng-model="formData.area" type="text" name="area" required><br>
+                            </div>
+                            <div class="inputView">
+                                Github Issue url:<br>
+                                <input class="viewInputs" ng-model="formData.issue" type="text" name="issue" required><br>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 inputView">
+                                    Description:<br>
+                                    <input class="viewInputs" ng-model="formData.description" type="textarea" name="description" style="height:350px;font-style:float;"
+                                        required>
+                                </div>
+                                <div class="col-md-6 inputView">
+                                    Akzeptanzkriterien:<br>
+                                    <input class="viewInputs" ng-model="formData.acceptanceCriteria" type="textarea" name="akzeptankriterien" style="height:350px"
+                                        required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div ng-controller="BacklogDataCtrl">
+                    <button type="button" name="button" id="addItem" class="btn btn-primary" ng-click="test();" onclick="new2()" data-dismiss="modal">Save changes</button>
+                    <div id="backlogs" style="display: none"> {{backlogsList}} </div>
+                    <div id="received">{{received}}</div>
+                </div>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </form>
+<%for(int i = 0; i < JSON.parse(document.getElementById('backlogs').innerHTML).length; i++){%>
+    <form id="taskssubmit" style="margin: 0 auto">
+        <div class="modal fade" id='exampleModalLabelTask' role="dialog">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Task</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container" style="border:none;width:550px; padding:10px;" style="background:rgb(255,255,255);margin:0px;padding:0px;border-image:none;width:100%;height:700px;">
+                            <div>
+                                <input type="hidden" id="bugsId" name="bugsId" value=""></input>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8 inputView">
+                                    User<br>
+                                    <input class="viewInputs" list="user" name="user" id="users_" required>
+                                    <datalist id="user">
+
+                                    </datalist>
+                                </div>
+                                <div class="col-md-2 inputView">
+                                    Prio<br>
+                                    <input class="viewInputs" list="prio" id="prios_" name="prio" required>
+                                    <datalist id="prio">
+                                        <option value="1">
+                                            <option value="2">
+                                                <option value="3">
+                                                    <option value="4">
+                                                        <option value="5">
+                                                            <option value="6">
+                                                                <option value="7">
+                                    </datalist>
+                                </div>
+                                <div class="col-md-2 inputView">
+
+                                    Estimate<br>
+                                    <input class="viewInputs" list="estimate" id="estimates_" name="estimate" required>
+                                    <datalist id="estimate">
+                                        <option value="0">
+                                            <option value="0,5">
+                                                <option value="1">
+                                                    <option value="2">
+                                                        <option value="3">
+                                                            <option value="5">
+                                                                <option value="8">
+                                                                    <option value="13">
+                                                                        <option value="20">
+                                                                            <option value="40">
+                                                                                <option value="100">
+                                    </datalist>
+                                </div>
+                            </div>
+                            <div>
+                                Titel:<br>
+                                <input class="viewInputs" id="titel_" type="text" name="titel" required><br>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 inputView">
+                                    Description:<br>
+                                    <input class="viewInputs" id="description2_" type="textarea" name="description" style="height:350px;font-style:float;" required>
+                                </div>
+                                <div class="col-md-6 inputView">
+                                    Comments:<br>
+                                    <input class="viewInputs" id="comments_" type="textarea" name="Comments" style="height:350px" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div ng-controller="TaskDataCtrl">
+                        <button type="submit" name="button" id="addItem_<%JSON.parse(document.getElementById('backlogs').innerHTML)[i]._id%>" class="btn btn-primary" ng-click="addTask();" onclick="new2()" data-dismiss="modal">Save changes</button>
+                        <div id="tasks" style="display: none"> {{tasksList}} </div>
+                    </div>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <%}%>
+</body>
+
+</html>
