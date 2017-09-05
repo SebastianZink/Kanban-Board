@@ -21,20 +21,23 @@
 
 <script>
     $(document).ready(function () {
-            createKanban();
+        createKanban();
     });
 
-    function new2(){
+    function new2() {
         createKanban();
     }
-
 </script>
 
 <body>
     <button type='button' id='secondbutton' class='btn btn-info btn-lg' data-toggle='modal' data-target="#exampleModalLabel">+</button>
     <br />
-    <div id="kanban">
 
+    <div id="container">
+        <div id="kanban">
+
+        </div>
+        <button>+</button>
     </div>
 
     <div id="users" style="display: none" ng-controller="UserDataCtrl"> {{userList}} </div>
