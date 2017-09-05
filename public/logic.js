@@ -1,5 +1,8 @@
 function createKanban() {
-    
+    while (document.getElementById('backlogs').innerHTML.length == 2) {
+        
+    }
+
     document.getElementById('container').remove();
     var users = JSON.parse(document.getElementById('users').innerHTML);
     var backlogs = JSON.parse(document.getElementById('backlogs').innerHTML);
