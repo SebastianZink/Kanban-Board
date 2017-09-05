@@ -13,32 +13,32 @@ function createKanban() {
             kanban.setAttribute('id', 'kanban_' + backlogs[i]._id);
             document.getElementById('container').appendChild(kanban);
             var fields = [{
-                    name: "id",
-                    type: "string"
-                },
-                {
-                    name: "status",
-                    map: "state",
-                    type: "string"
-                },
-                {
-                    name: "text",
-                    map: "label",
-                    type: "string"
-                },
-                {
-                    name: "tags",
-                    type: "string"
-                },
-                {
-                    name: "color",
-                    map: "hex",
-                    type: "string"
-                },
-                {
-                    name: "resourceId",
-                    type: "number"
-                }
+                name: "id",
+                type: "string"
+            },
+            {
+                name: "status",
+                map: "state",
+                type: "string"
+            },
+            {
+                name: "text",
+                map: "label",
+                type: "string"
+            },
+            {
+                name: "tags",
+                type: "string"
+            },
+            {
+                name: "color",
+                map: "hex",
+                type: "string"
+            },
+            {
+                name: "resourceId",
+                type: "number"
+            }
             ];
 
             var source = {
@@ -74,21 +74,21 @@ function createKanban() {
                     localData: [],
                     dataType: "array",
                     dataFields: [{
-                            name: "id",
-                            type: "number"
-                        },
-                        {
-                            name: "name",
-                            type: "string"
-                        },
-                        {
-                            name: "image",
-                            type: "string"
-                        },
-                        {
-                            name: "common",
-                            type: "boolean"
-                        }
+                        name: "id",
+                        type: "number"
+                    },
+                    {
+                        name: "name",
+                        type: "string"
+                    },
+                    {
+                        name: "image",
+                        type: "string"
+                    },
+                    {
+                        name: "common",
+                        type: "boolean"
+                    }
                     ]
                 };
 
@@ -108,24 +108,34 @@ function createKanban() {
                 resources: resourcesAdapterFunc(),
                 source: dataAdapter,
                 columns: [{
-                        text: "Backlog",
-                        dataField: "backlog"
-                    },
-                    {
-                        text: "New",
-                        dataField: "new"
-                    },
-                    {
-                        text: "In Progress",
-                        dataField: "work"
-                    },
-                    {
-                        text: "Done",
-                        dataField: "done"
-                    }
+                    text: "Backlog",
+                    dataField: "backlog"
+                },
+                {
+                    text: "New",
+                    dataField: "new"
+                },
+                {
+                    text: "In Progress",
+                    dataField: "work"
+                },
+                {
+                    text: "Done",
+                    dataField: "done"
+                }
                 ]
             });
-            $("#kanban-column-0").append("<button type='button'id='secondbutton'class='btn btn-info btn-lg' data-toggle='modal' data-target='#exampleModalLabel'>New task</button>");
+
+            var btn = document.createElement("button");
+            btn.setAttribute('id', 'addTask_' + backlogs[i]._id);
+            var t = document.createTextNode('+');
+            btn.appendChild(t);
+            btn.style.height = "50px";
+            btn.style.width = "50px";
+            btn.setAttribute('class', 'btn btn-info btn-lg');
+            btn.setAttribute('data-toggle', 'modal');
+            btn.setAttribute('data-target', '#exampleModalLabelTask');
+            document.getElementById('kanban_' + backlogs[i]._id + '-column-1').appendChild(btn);
         }
     }, Number(document.getElementById('time').innerHTML) + 700);
 }
