@@ -3,7 +3,6 @@ var express = require('express'),
     mongoose = require('mongoose'),
     mongodb = require('mongodb'),
     MongoClient = mongodb.MongoClient,
-    ejs = require('ejs'),
     bodyParser = require('body-parser');
 
 app.use(express.static(__dirname + ('/public')));
@@ -11,12 +10,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-
-app.set('view engine', 'ejs');
-
-app.get('/', function(req, res){
-    res.render('index');
-});
+app.use('/', express.static(__dirname + '/'));
 
 app.get('/get/Backlogs', function (req, res) {
     MongoClient.connect('mongodb://szi:0800@ds155191.mlab.com:55191/kanban_board', function (err, db) {
@@ -83,7 +77,7 @@ app.post('/post/backlog', function (req, res) {
     });
 });
 
-app.post('/post/NewTask', function (req, res) {
+app.post('/post/Task', function (req, res) {
     MongoClient.connect('mongodb://szi:0800@ds155191.mlab.com:55191/kanban_board', function (err, db) {
         var taskCollection = db.collection('tasks');
         taskCollection.insert({
@@ -107,7 +101,7 @@ app.post('/post/NewTask', function (req, res) {
     });
 });
 
-app.put('/post/editTask', function (req, res) {
+app.put('/put/Task', function (req, res) {
     MongoClient.connect('mongodb://szi:0800@ds155191.mlab.com:55191/kanban_board', function (err, db) {
         var taskCollection = db.collection('tasks');
         taskCollection.update({
